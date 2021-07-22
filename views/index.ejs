@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive | Chat System</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Otomanopee+One&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+  </head>
+
+
+
+  <body>
+    <div class="main">
+      <input type="checkbox" id="check">
+      <label for="check">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+      </label>
+
+      <div class="sidebar">
+        <a href="#"> <img src="/images/logo.svg" alt="logo-image"> </a>
+        <hr>
+        <ul class="nav">
+          <li> <a href="#" class="nav-links active"> <i class="fas fa-person-booth"></i> Room:</a> </li>
+          <li> <a href="#" class="nav-links room-name" id="general">General Room</a> </li>
+        </ul>
+        <p> <i class="fas fa-users"></i> Users</p>
+        <ul class="nav" id="user">
+
+        </ul>
+
+      </div>
+      <div class="overlay"></div>
+      <div class="message-box">
+        <div class="message-div general" id="messages">
+          <div class="messages"> <p class="meta"> <span> <%= name %> </span><%= new Date().toLocaleTimeString() %> </p><p class="text">Welcome to Archive!!</p></div>
+
+        </div>
+        <!-- <div class="message-div private" id="messages">
+
+        </div> -->
+        <form id="form">
+          <input id="input" name="text" autocomplete="off" /><button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+
+
+    <script src="/chat.js" charset="utf-8"></script>
+  </body>
+</html>

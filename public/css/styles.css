@@ -1,0 +1,155 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  position: relative;
+  background: rgb(100,65,165);
+  background: linear-gradient(144deg, rgba(100,65,165,1) 36%, #2a0845 100%);
+  background-repeat: no-repeat;
+  font-family: 'Open Sans', sans-serif;
+}
+nav {
+  padding: 1% 2%;
+}
+nav div {
+  margin: 0;
+  padding: 0;
+  width: 60%;
+}
+img {
+  width: 20%;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+}
+.sidebar {
+  flex: 0 1 50%;
+}
+.sidebar ul {
+   list-style-type: none;
+   margin: 0;
+   display: flex;
+   width: 60%;
+   overflow: hidden;
+ }
+.sidebar ul li {
+  padding: 0 3%;
+}
+.blur {
+  background-color: rgba(0, 0, 0, 4%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
+  backdrop-filter: blur(3px);
+}
+a{
+  text-decoration: none;
+  text-align: center;
+  color: white;
+}
+h1 {
+  text-transform: uppercase;
+  /* font-family: "Segoe Script", sans-serif; */
+  font-family: 'Balsamiq Sans', cursive;
+  margin: 0 auto;
+  text-align: center;
+  color: white;
+}
+#container {
+  background-color: rgba(0, 0, 0, 10%);
+  width: 20%;
+  border-radius: 7px;
+  position: fixed;
+  top: 25%;
+  left: 10%;
+  right: 10%;
+}
+p {
+  margin: 3% 0;
+  text-align: center;
+  font-size: 12px;
+}
+div {
+  width: 70%;
+  margin: 0 auto;
+  padding: 3% 0 0;
+  line-height: 1.5;
+  vertical-align: baseline;
+  letter-spacing: normal;
+  word-spacing: 0;
+}
+form input {
+  border-radius: 6px;
+  outline: none;
+
+  height: 30px;
+  width: 100%;
+  margin-bottom: 2%;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: inset 0 -3px 0 0 #7B94A8;
+}
+
+::placeholder {
+
+  text-transform: uppercase;
+  color: grey;
+  opacity: 1;
+}
+div .name{
+  transition: all .5s ease;
+  display: flex;
+  width: 100%;
+}
+.drop {
+  transition: all .5s ease;
+
+}
+.hide{
+  display: none;
+}
+div .name input{
+  width: 50%;
+}
+form label {
+  font-family: "KoHo", sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: white;
+}
+button {
+  margin: 2% auto;
+  display: block;
+  width: 50%;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #185a9d;
+  font-size: 18px;
+  font-weight: 400;
+}
+.btn {
+  border: 1px solid #2413BC;
+  border-radius: 8px;
+  line-height: 2;
+  text-align: center;
+  transition: color .15s ease-in-out,
+  background-color .15s ease-in-out,
+  border-color .15s ease-in-out,
+  box-shadow .15s ease-in-out;
+}
+@media (max-width: 800px) {
+  #container{
+    width: inherit;
+  }
+}
