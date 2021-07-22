@@ -68,7 +68,9 @@ function saveUser(id, user){
   const currentUser = new User({
     user:user
   });
-  currentUser.save();
+  if (user === userName) {
+    currentUser.save();
+  }
   users.push({id,user});
   //console.log(users);
   return id;
@@ -91,7 +93,7 @@ let name = '';
 io.on('connection', (socket) => {
   id = socket.id;
   roomId = 'room';
-  saveUser(id, name);
+  saveUser(id, userName);
   let user = findUserById(id);
 
   socket.join(roomId);
@@ -105,7 +107,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.broadcast.emit('message', formatMessage(archive, `${name} is connected`));
+  socket.broadcast.emit('message', formatMessage(archive, `${userName} is connected`));
 
   socket.on('chat-message', (msg) => {
     console.log(msg);
@@ -164,7 +166,7 @@ app.get("/chat/:username", function(req, res){
 });
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 8000;
+  port = 3000;
 }
 
 server.listen(port,function(){

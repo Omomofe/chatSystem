@@ -83,6 +83,7 @@ var form = document.getElementById('form');
        div.style.fontStyle = 'italic';
        div.style.background = 'inherit';
        div.style.margin = '2% auto';
+       div.style.fontSize = '70%';
      }
     messages.appendChild(newDiv);
 
