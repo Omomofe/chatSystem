@@ -50,7 +50,7 @@ var form = document.getElementById('form');
 
       userList = document.createElement('li');
       userList.classList.add('list');
-      userList.innerHTML = `<a href="#" class="nav-links">${user}</a><i class="fas fa-circle "></i>`;
+      userList.innerHTML = `<a href="#" class="nav-links">${user}</a><i class="fas fa-circle " id="online"></i>`;
       userDiv.appendChild(userList);
 
     });

@@ -20,7 +20,9 @@ body {
   box-sizing: border-box;
   backdrop-filter: blur(10px);
 }
-
+#online{
+  font-size: 10px;
+}
 #input {
   border: none;
   padding: 0 1rem;
@@ -217,7 +219,7 @@ label #btn, label #cancel{
   label #cancel {
     display: none;
   }
-  label #btn {
+  label,label #btn {
     display: none;
   }
   .overlay {
@@ -228,8 +230,11 @@ label #btn, label #cancel{
 @media (max-width: 950px) {
   .sidebar {
     position: fixed;
-    left: -25%;
+    left: -40%;
     z-index: 4;
+  }
+  #messages{
+    margin-top: 8%;
   }
   .overlay {
     background-color: rgba(0, 0, 0, 10%);
@@ -244,31 +249,38 @@ label #btn, label #cancel{
     backdrop-filter: blur(5px);
   }
   .message-box {
-    margin-left: 50px;
-    width: 86%;
+    width: 100%;
+  }
+  label .check-btn {
+    padding: 2% 5%;
+    width: 100%;
+    z-index: 7;
+    display: flex;
+    position: fixed;
+    background-color: #1f2124;
+    transition: all .5s ease;
   }
   label #btn {
     z-index: 6;
-    left: 0;
-    height: -webkit-fill-available;
-    top: 0;
-    font-size: 35px;
+    left: 70%;
+    top: 10px;
+    font-size: 1.8rem;
     color: white;
     padding: 6px 12px;
     transition: all .5s ease;
 
   }
   label #cancel {
-    z-index: 5;
+    z-index: 7;
     left: -20%;
-    top: 15px;
-    font-size: 30px;
+    top: 10px;
+    font-size: 1.5rem;
     color: white;
     padding: 4px 9px;
   }
   #check:checked ~ .sidebar {
     left: 0;
-    width: 45%;
+    width: 55%;
 
   }
   #check:checked ~ label #btn {
@@ -276,16 +288,19 @@ label #btn, label #cancel{
     left: 200px;
   }
   #check:checked ~ label #cancel {
-    left: 42%;
+    left: 70%;
     transition: all .5s ease;
   }
   #check:checked ~ .overlay{
     left: 0;
   }
 }
-@media (max-width: 390px) {
+@media (max-width: 400px) {
   #check:checked ~ .sidebar {
     width: 70%;
+  }
+  #messages{
+    margin-top: 15%;
   }
   #input {
     width: inherit;

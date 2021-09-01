@@ -17,12 +17,12 @@
     <div class="main">
       <input type="checkbox" id="check">
       <label for="check">
-        <i class="fas fa-bars" id="btn"></i>
+        <div class="check-btn"> <a href="#"><h3>Chat<sup>System</sup> </h3></a> <i class="fas fa-bars" id="btn"></i></div>
         <i class="fas fa-times" id="cancel"></i>
       </label>
 
       <div class="sidebar">
-        <a href="#"> <h3>Acceler8<sup>chat</sup> </h3> </a>
+        <a href="#"> <h3>Chat<sup>System</sup> </h3> </a>
         <hr>
         <ul class="nav">
           <li> <a href="#" class="nav-links active"> <i class="fas fa-person-booth"></i> Room:</a> </li>
@@ -37,13 +37,17 @@
       <div class="overlay"></div>
       <div class="message-box">
         <div class="message-div general" id="messages">
-          <div class="messages"> <p class="meta"> <span> <%= name %> </span><%= new Date().toLocaleTimeString() %> </p><p class="text">Welcome to Acceler8!!</p></div>
+          <div class="messages"> <p class="meta"> <span> <%= name %> </span><%= new Date().toLocaleTimeString() %> </p><p class="text">Welcome !!</p></div>
 
         </div>
         <!-- <div class="message-div private" id="messages">
 
         </div> -->
         <form id="form">
+          <!-- <div class="upload-btn-wrapper">
+            <button class="btn">U</button>
+            <input type="file" name="myfile" />
+          </div> -->
           <input id="input" name="text" autocomplete="off" /><button type="submit">Send</button>
         </form>
       </div>

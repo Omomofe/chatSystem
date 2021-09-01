@@ -3,7 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
-
+const md5 = require('md5');
 const app = express();
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -12,14 +12,16 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://admin-mofe:react.node5@chatcluster.itadc.mongodb.net/messageDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
 
+//mongodb://localhost:27017/messageDB
 const messageSchema = new mongoose.Schema({
   username: String,
   text: String,
   time: String
 });
 const userSchema = new mongoose.Schema({
-  id: String,
-  user: String,
+  firstName: String,
+  lastName: String,
+  email: String,
   password: String
 });
 const User = mongoose.model('User', userSchema);
@@ -51,32 +53,76 @@ let userName = "";
 let users = [];
 let id = "";
 
-
+app.get('/', function(req, res){
+  res.redirect('/register');
+});
 
 app.get("/login", function(req, res){
   res.render("login");
 });
+
+app.get('/register', function(req, res){
+  res.render('register');
+});
+
+app.post('/register', function(req, res){
+
+
+
+  const newUser = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: md5(req.body.password)
+  });
+  newUser.save(function(err){
+    if(err){
+
+      console.log(err);
+
+    }else {
+      userName = req.body.firstName;
+      res.redirect("/chat/" + userName);
+    }
+  });
+
+});
 app.post("/login", function(req, res){
 
-  userName = req.body.userName;
 
-  res.redirect("/chat/" + userName);
+  const email = req.body.email;
+
+  User.findOne({email: email}, function(err, foundUser){
+
+    if(err){
+      console.log(err);
+    }else{
+      if (foundUser) {
+
+        if (foundUser.password === md5(req.body.password)) {
+          userName = foundUser.firstName;
+          res.redirect("/chat/" + userName);
+        }
+
+      }
+
+    }
+  });
+
 });
 
 
 function saveUser(id, user){
-  const currentUser = new User({
-    user:user
-  });
+
   if (user === userName) {
-    currentUser.save();
+    users.push({id,user});
   }
-  users.push({id,user});
-  //console.log(users);
+
+
   return id;
 }
 function findUserById(id){
-  let user =  users.find(user => user.id === id );
+  let user =  users.find (user => user.id === id );
   // console.log(user);
 
   return user;
