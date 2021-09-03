@@ -11,7 +11,7 @@ const io = new Server(server);
 const moment = require('moment');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://admin-mofe:react.node5@chatcluster.itadc.mongodb.net/messageDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
-
+//
 //mongodb://localhost:27017/messageDB
 const messageSchema = new mongoose.Schema({
   username: String,
