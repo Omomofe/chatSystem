@@ -55,7 +55,7 @@ body {
   list-style-type: none;
   margin: 0 0 0 3%;
   padding: 0;
-  height: 90%;
+  height: 85%;
   overflow: auto;
 }
 
@@ -304,5 +304,8 @@ label #btn, label #cancel{
   }
   #input {
     width: inherit;
+  }
+  label #btn {
+    font-size: 1rem;
   }
 }
