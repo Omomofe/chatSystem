@@ -306,6 +306,8 @@ label #btn, label #cancel{
     width: inherit;
   }
   label #btn {
-    font-size: 1rem;
+    font-size: 1.3rem;
+    top: 5px;
   }
+
 }
