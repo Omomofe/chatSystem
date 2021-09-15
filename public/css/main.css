@@ -55,7 +55,7 @@ body {
   list-style-type: none;
   margin: 0 0 0 3%;
   padding: 0;
-  height: 80%;
+  height: 90%;
   overflow: auto;
 }
 
@@ -273,7 +273,7 @@ label #btn, label #cancel{
   label #cancel {
     z-index: 7;
     left: -20%;
-    top: 10px;
+    top: 5px;
     font-size: 1.5rem;
     color: white;
     padding: 4px 9px;
@@ -301,6 +301,7 @@ label #btn, label #cancel{
   }
   #messages{
     margin-top: 15%;
+    height: 80%;
   }
   #input {
     width: inherit;

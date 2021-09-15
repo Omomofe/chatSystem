@@ -90,12 +90,15 @@ form input {
   outline: none;
   border: none;
   height: 30px;
-  width: 100%;
+  padding-left: 8%;
+  width: 92%;
   margin-bottom: 2%;
 }
 
 input:focus {
   outline: none;
+  height: 27px;
+  width: 98%;
   border: 1.5px solid #3aff20;
   box-shadow: 0px 0px 10px #3aff20;
 
@@ -103,7 +106,8 @@ input:focus {
 
 ::placeholder {
 
-  text-transform: uppercase;
+  text-transform: capitalize;
+
   color: grey;
   opacity: 1;
 }
@@ -113,6 +117,7 @@ div .name{
   justify-content: space-between;
   width: 100%;
 }
+
 .drop {
   transition: all .5s ease;
 
@@ -121,7 +126,10 @@ div .name{
   display: none;
 }
 div .name input{
-  width: 45%;
+  width: 40%;
+}
+.mb-3.drop {
+  padding: 1% 0 0;
 }
 form label {
   font-family: "KoHo", sans-serif;
@@ -130,6 +138,7 @@ form label {
   font-weight: 400;
   color: white;
 }
+
 button {
   margin: 2% auto;
   display: block;
@@ -160,5 +169,6 @@ span {
 @media (max-width: 800px) {
   #container{
     width: inherit;
+    top: 10%;
   }
 }

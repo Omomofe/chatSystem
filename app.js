@@ -1,31 +1,47 @@
 //jshint esversion:6
-
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
-const md5 = require('md5');
+
 const app = express();
+const session = require('express-session');
+const passport = require('passport');
+
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const moment = require('moment');
+
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://admin-mofe:react.node5@chatcluster.itadc.mongodb.net/messageDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
-//
-//mongodb://localhost:27017/messageDB
-const messageSchema = new mongoose.Schema({
-  username: String,
-  text: String,
-  time: String
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.set('useCreateIndex', true);
+
+const {User, Message} = require('./collections/messages.js')
+
+
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
-const userSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  email: String,
-  password: String
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
-const User = mongoose.model('User', userSchema);
-const Message = mongoose.model('Message', messageSchema);
 
 function formatMessage(username, text){
   const message = new Message ({
@@ -68,46 +84,66 @@ app.get('/register', function(req, res){
 app.post('/register', function(req, res){
 
 
-
-  const newUser = new User({
-    firstName: req.body.firstName,
+  User.register({firstName: req.body.firstName,
     lastName: req.body.lastName,
-    email: req.body.email,
-    password: md5(req.body.password)
-  });
-  newUser.save(function(err){
-    if(err){
+    username: req.body.username},req.body.password, function(err, user){
+      if (err) {
 
-      console.log(err);
+        console.log(err);
+        res.render('register');
 
-    }else {
-      userName = req.body.firstName;
-      res.redirect("/chat/" + userName);
-    }
-  });
+      } else {
 
+        passport.authenticate('local')(req, res, function(){
+          userName = req.body.firstName;
+          res.redirect("/chat/" + userName);
+
+        })
+      }
+    })
+
+
+  
 });
 app.post("/login", function(req, res){
 
+  const email = req.body.username;
+  const loginUser = new User({
 
-  const email = req.body.email;
+    username: req.body.username,
+    password: req.body.password
 
-  User.findOne({email: email}, function(err, foundUser){
+  });
 
-    if(err){
+  req.login(loginUser, function(err){
+
+    if (err) {
+
       console.log(err);
-    }else{
-      if (foundUser) {
 
-        if (foundUser.password === md5(req.body.password)) {
-          userName = foundUser.firstName;
-          res.redirect("/chat/" + userName);
-        }
+    } else {
 
-      }
+      passport.authenticate('local')(req, res, function(){
+        User.findOne({username: email}, function(err, foundUser){
 
+          if(err){
+
+            console.log(err);
+
+          }else{
+            if (foundUser) {
+
+              userName = foundUser.firstName;
+              res.redirect("/chat/" + userName);
+
+            }
+      
+          }
+        });
+      });
     }
   });
+
 
 });
 
@@ -117,14 +153,12 @@ function saveUser(id, user){
   if (user === userName) {
     users.push({id,user});
   }
-
-
   return id;
 }
-function findUserById(id){
-  let user =  users.find (user => user.id === id );
-  // console.log(user);
 
+function findUserById(id){
+
+  let user =  users.find (user => user.id === id );
   return user;
 
 }
@@ -137,12 +171,15 @@ let name = '';
 
 
 io.on('connection', (socket) => {
+
   id = socket.id;
   roomId = 'room';
   saveUser(id, userName);
   let user = findUserById(id);
 
   socket.join(roomId);
+
+
   users.forEach((eachUser) => {
     if (eachUser.user === userName) {
       Message.find({}, function(err, messages){
@@ -162,54 +199,58 @@ io.on('connection', (socket) => {
       console.log(user);
       io.emit('message', formatMessage(user.user, msg));
     }
+
   });
+
   var clients_in_the_room = io.sockets.adapter.rooms;
-  // for (var clientId in clients_in_the_room ) {
-  //   console.log( clientId); //Seeing is believing
-  //   //var client_socket = io.sockets.connected[clientId];//Do whatever you want with this
-  // }
+
   var clients = [];
   clients_in_the_room.get(roomId).forEach((client) => {
 
     clients.push(findUserById(client));
   });
 
-  console.log(clients);
+  console.log(users);
   io.emit('user-connect', clients);
 
 socket.on('disconnect', () => {
 
 
     io.emit('message', formatMessage(archive, `${user.user} left!.`));
-    io.emit('user-connect', clients);
+    
     users.forEach((item) => {
+
       if(user.user === item.user){
         var index = users.indexOf(item);
         users.splice(index,1);
       }
+
     });
+
+    io.emit('user-connect', users);
+    console.log(users);
 
     console.log(clients);
     console.log(`${user.user} disconnected`);
   });
 });
 
-const archive = 'ADMIN';
+const chatAdmin = 'ADMIN';
 app.get("/chat/:username", function(req, res){
+  
  name = req.params.username;
-
-  if (userName === "") {
-    res.redirect('/login');
-  } else {
+  if (req.isAuthenticated()) {
+    
     res.render("index",{
-      name: archive
+      name: chatAdmin
     });
-
-
-
+  } else {
+    res.redirect('/login');
   }
 
 });
+
+
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;

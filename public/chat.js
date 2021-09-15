@@ -9,7 +9,7 @@ var messages = document.getElementById('messages');
 
 var socket = io();
 var form = document.getElementById('form');
-  var input = document.getElementById('input');
+var input = document.getElementById('input');
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -90,15 +90,9 @@ var form = document.getElementById('form');
     messages.scrollTop = messages.scrollHeight;
   });
 
-//   message.addEventListener('keypress', function(){
+//   input.addEventListener('keypress', function(){
 //   if(handle.value.length > 0){
 //     socket.emit('typing', handle.value);
 //   }
 // });
-  //
-  //socket.on('message', function(message){
-  //   var item = document.createElement("li");
-  //   item.textContent = message;
-  //   messages.appendChild(item);
-  //   window.scrollTo(0, document.body.scrollHeight);
-  // });
+  
