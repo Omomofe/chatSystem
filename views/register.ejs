@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | Archive Chat </title>
+<%- include('partials/header') %>
 
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/logo2.png">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Acme&family=Balsamiq+Sans&family=KoHo:wght@300;400;500;600&display=swap" rel="stylesheet">
-  </head>
-  <body>
-  <nav>
-    <div class="logo"> <img src="images/logo.svg" alt=""> </div>
-    <nav class="sidebar">
-      <ul>
-        <li> <a href="#">Home</a> </li>
-        <li> <a href="#">Messages</a> </li>
-        <li> <a href="#">Chat</a> </li>
-      </ul>
-    </nav>
-  </nav>
   <div class="blur"></div>
   <div id="container">
 
@@ -47,6 +24,5 @@
     </form>
     <p> Already have an account? <a href="/login">login</a> instead.</p>
   </div>
-  <script src="login.js" charset="utf-8"></script>
-  </body>
-</html>
+  
+<%- include('partials/footer') %>
