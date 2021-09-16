@@ -20,10 +20,10 @@ For fellow Developer who would like to check the code out and make use of it, us
 >**Note:** To do this, you need quite an understanding on Node,Socket.io and JavaScript.
 
 ## Usage.
-The name `**Chat System**` has defined it all. All you've got to do as a User is:
+The name **`Chat System`** has defined it all. All you've got to do as a User is:
 
 - Login with your email address and password used to register.
-- Register instead if you don't have an account on `**Chat System**`.
+- Register instead if you don't have an account on **`Chat System`**.
 - You are all set, chat and make friends with other users.
 
 
