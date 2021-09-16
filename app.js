@@ -9,15 +9,23 @@ const session = require('express-session');
 const passport = require('passport');
 
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+const {
+  Server
+} = require("socket.io");
 const io = new Server(server);
 const moment = require('moment');
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 mongoose.set('useCreateIndex', true);
 
-const {User, Message} = require('./collections/messages.js')
+const {
+  User,
+  Message
+} = require('./collections/messages.js');
 
 
 app.use(session({
@@ -43,11 +51,11 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-function formatMessage(username, text){
-  const message = new Message ({
+function formatMessage(username, text) {
+  const message = new Message({
     username: username,
     text: text,
-    time:moment().format('h:mm a')
+    time: moment().format('h:mm a')
   });
   message.save();
 
@@ -60,7 +68,9 @@ function formatMessage(username, text){
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static('public'));
 
 
@@ -69,43 +79,45 @@ let userName = "";
 let users = [];
 let id = "";
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   res.redirect('/register');
 });
 
-app.get("/login", function(req, res){
+app.get("/login", function(req, res) {
   res.render("login");
 });
 
-app.get('/register', function(req, res){
+app.get('/register', function(req, res) {
   res.render('register');
 });
 
-app.post('/register', function(req, res){
+app.post('/register', function(req, res) {
 
 
-  User.register({firstName: req.body.firstName,
+  User.register({
+    firstName: req.body.firstName,
     lastName: req.body.lastName,
-    username: req.body.username},req.body.password, function(err, user){
-      if (err) {
+    username: req.body.username
+  }, req.body.password, function(err, user) {
+    if (err) {
 
-        console.log(err);
-        res.render('register');
+      console.log(err);
+      res.render('register');
 
-      } else {
+    } else {
 
-        passport.authenticate('local')(req, res, function(){
-          userName = req.body.firstName;
-          res.redirect("/chat/" + userName);
+      passport.authenticate('local')(req, res, function() {
+        userName = req.body.firstName;
+        res.redirect("/chat/" + userName);
 
-        })
-      }
-    })
+      });
+    }
+  });
 
 
-  
+
 });
-app.post("/login", function(req, res){
+app.post("/login", function(req, res) {
 
   const email = req.body.username;
   const loginUser = new User({
@@ -115,7 +127,7 @@ app.post("/login", function(req, res){
 
   });
 
-  req.login(loginUser, function(err){
+  req.login(loginUser, function(err) {
 
     if (err) {
 
@@ -123,21 +135,23 @@ app.post("/login", function(req, res){
 
     } else {
 
-      passport.authenticate('local')(req, res, function(){
-        User.findOne({username: email}, function(err, foundUser){
+      passport.authenticate('local')(req, res, function() {
+        User.findOne({
+          username: email
+        }, function(err, foundUser) {
 
-          if(err){
+          if (err) {
 
             console.log(err);
 
-          }else{
+          } else {
             if (foundUser) {
 
               userName = foundUser.firstName;
               res.redirect("/chat/" + userName);
 
             }
-      
+
           }
         });
       });
@@ -148,17 +162,20 @@ app.post("/login", function(req, res){
 });
 
 
-function saveUser(id, user){
+function saveUser(id, user) {
 
   if (user === userName) {
-    users.push({id,user});
+    users.push({
+      id,
+      user
+    });
   }
   return id;
 }
 
-function findUserById(id){
+function findUserById(id) {
 
-  let user =  users.find (user => user.id === id );
+  let user = users.find(user => user.id === id);
   return user;
 
 }
@@ -182,15 +199,15 @@ io.on('connection', (socket) => {
 
   users.forEach((eachUser) => {
     if (eachUser.user === userName) {
-      Message.find({}, function(err, messages){
+      Message.find({}, function(err, messages) {
         messages.forEach((message) => {
-          socket.emit('message',message);
+          socket.emit('message', message);
         });
       });
     }
   });
 
-  socket.broadcast.emit('message', formatMessage(archive, `${userName} is connected`));
+  socket.broadcast.emit('message', formatMessage(chatAdmin, `${userName} is connected`));
 
   socket.on('chat-message', (msg) => {
     console.log(msg);
@@ -213,16 +230,16 @@ io.on('connection', (socket) => {
   console.log(users);
   io.emit('user-connect', clients);
 
-socket.on('disconnect', () => {
+  socket.on('disconnect', () => {
 
 
-    io.emit('message', formatMessage(archive, `${user.user} left!.`));
-    
+    io.emit('message', formatMessage(chatAdmin, `${user.user} left!.`));
+
     users.forEach((item) => {
 
-      if(user.user === item.user){
+      if (user.user === item.user) {
         var index = users.indexOf(item);
-        users.splice(index,1);
+        users.splice(index, 1);
       }
 
     });
@@ -236,12 +253,12 @@ socket.on('disconnect', () => {
 });
 
 const chatAdmin = 'ADMIN';
-app.get("/chat/:username", function(req, res){
-  
- name = req.params.username;
+app.get("/chat/:username", function(req, res) {
+
+  name = req.params.username;
   if (req.isAuthenticated()) {
-    
-    res.render("index",{
+
+    res.render("index", {
       name: chatAdmin
     });
   } else {
@@ -256,6 +273,6 @@ if (port == null || port == "") {
   port = 3000;
 }
 
-server.listen(port,function(){
+server.listen(port, function() {
   console.log("Server has started on port 3000");
 });
